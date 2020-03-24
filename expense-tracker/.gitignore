@@ -2,4 +2,5 @@
 *.iml
 .idea/
 /target
-
+../.vscode/
+.settings/org.eclipse.jdt.apt.core.prefs

@@ -4,6 +4,6 @@ server:
   
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/sys
+    url: jdbc:mysql://localhost:3306/expense_tracker
     username: admin
-    password: crazy31$
+    password: admin@123

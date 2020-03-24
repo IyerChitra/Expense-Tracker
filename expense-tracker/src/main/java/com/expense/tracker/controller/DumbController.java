@@ -1,4 +1,4 @@
-package com.project.name.controller;
+package com.expense.tracker.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

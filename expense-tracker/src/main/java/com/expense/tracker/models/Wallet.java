@@ -1,4 +1,4 @@
-package com.project.name.model;
+package com.expense.tracker.models;
 
 import java.util.Date;
 
