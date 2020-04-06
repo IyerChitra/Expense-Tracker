@@ -1,5 +1,6 @@
 package com.expense.tracker.service.impl;
 
+import com.expense.tracker.models.BaseResponse;
 import com.expense.tracker.models.User;
 import com.expense.tracker.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,7 +23,7 @@ public class UserServiceImpl implements IUserService {
   @Autowired JdbcTemplate jdbcTemplate;
 
   @Override
-  public User getUserDetails(Long userId) {
+  public BaseResponse<User> getUserDetails(Long userId) {
 
     SimpleJdbcCall simpleJdbcCall =
         new SimpleJdbcCall(jdbcTemplate)
@@ -44,6 +46,10 @@ public class UserServiceImpl implements IUserService {
     SqlParameterSource inputParameter = new MapSqlParameterSource().addValue("in_user_id", userId);
     Map<String, Object> out = simpleJdbcCall.execute(inputParameter);
     List<User> users = (List<User>) out.get("userDetails");
-    return users.get(0);
+
+    if (CollectionUtils.isEmpty(users)) {
+      return new BaseResponse<>(null, "USER_NOT_FOUND", "User Not Found");
+    }
+    return new BaseResponse<>(users.get(0), null, null);
   }
 }
