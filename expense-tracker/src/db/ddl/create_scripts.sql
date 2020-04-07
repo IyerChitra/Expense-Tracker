@@ -8,7 +8,9 @@ create table t_user_details (
 
 create table t_user_wallets (
   f_email_id varchar(100) not null,
-  f_wallet_id bigint REFERENCES t_wallet_details(f_id)
+  f_wallet_id bigint REFERENCES t_wallet_details(f_id),f_created_by bigint REFERENCES t_user_details(f_id),
+  f_created_time timestamp default current_timestamp,
+  f_updated_time timestamp default current_timestamp
  );
  
 create table t_wallet_details( 

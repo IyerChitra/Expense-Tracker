@@ -1,5 +1,6 @@
 package com.expense.tracker.service.impl;
 
+import com.expense.tracker.models.BaseResponse;
 import com.expense.tracker.models.User;
 import com.expense.tracker.service.IUserService;
 
@@ -21,6 +22,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Component
 public class UserServiceImpl implements IUserService {
@@ -29,7 +31,7 @@ public class UserServiceImpl implements IUserService {
   Logger logger = (Logger) LoggerFactory.getLogger(UserServiceImpl.class);
 
   @Override
-  public User getUserDetails(String userId) {
+  public BaseResponse<User> getUserDetails(String userId) {
 
     SimpleJdbcCall simpleJdbcCall =
         new SimpleJdbcCall(jdbcTemplate)
@@ -46,11 +48,10 @@ public class UserServiceImpl implements IUserService {
 	                    user.setLastName(resultSet.getString("f_last_name"));
 	                    user.setEmailId(resultSet.getString("f_email"));
 	                    user.setMobileNo(resultSet.getString("f_mobile_number"));
-	                   // return user;
+	                   
 					} catch (SQLException e) {
-						// TODO Auto-generated catch block
+						
 						logger.debug("SQL Exception while mapping the rows from the ResultSet of the Procedure : fetch_user_details_v1dot0" + e);
-						e.printStackTrace();
 					}
                     return user;
                   }
@@ -58,29 +59,32 @@ public class UserServiceImpl implements IUserService {
 
     SqlParameterSource inputParameter = new MapSqlParameterSource().addValue("in_user_id", userId.toLowerCase());
     
-    Map<String, Object> out = null;
+    User user = null;
 	try {
-		out = simpleJdbcCall.execute(inputParameter);
+		Map<String, Object> out = simpleJdbcCall.execute(inputParameter);
+		user = (User) out.get("userDetails");
 	} catch (Exception e) {
-		// TODO Auto-generated catch block
+		
 		logger.debug("SQL Exception while executing the Procedure : fetch_user_details_v1dot0" + e);
-		e.printStackTrace();
+		return new BaseResponse<>(null, "SQL_EXCEPTION", "Back-end Error! Please retry.");
+		
 	}
-    if(out != null)
+    if(Objects.nonNull(user))
     {
-    	List<User> users = (List<User>) out.get("userDetails");
-    	return users.get(0);
+    	//List<User> users = (List<User>) out.get("userDetails");
+    	return new BaseResponse<>(user, null, null);
     }
     else
     {
-    	return null;
+    	return new BaseResponse<>(null, "USER_NOT_FOUND", "User Not Found. Please register as new User!");
     }
   }
   
   
   @Override
-  public User createNewUser(User newUser){
+  public BaseResponse<User> createNewUser(User newUser){
 	  /*Using JDBC Insert*/
+	  try{
 	  SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
 			  									.withTableName("t_user_details")
 			  									.usingGeneratedKeyColumns("f_id");
@@ -92,6 +96,13 @@ public class UserServiceImpl implements IUserService {
       
       Number newUserId = simpleJdbcInsert.executeAndReturnKey(inputParameters);
       newUser.setUserId(newUserId.longValue());
+	  }
+	  catch(Exception e){
+		  logger.debug("SQL Exception while inserting new user details into t_user_details table." + e);
+		  return new BaseResponse<>(null, "SQL_EXCEPTION", "Back-end Error! Please retry.");
+	  }
+
+      
       /*Using JDBC Insert*/
 	  
 	  
@@ -108,6 +119,6 @@ public class UserServiceImpl implements IUserService {
 	  newUser.setUserId(userId);
 	  /*Using JDBC Call*/
 	  
-	  return newUser;
+	  return new BaseResponse<>(newUser, null, null);
   }
 }

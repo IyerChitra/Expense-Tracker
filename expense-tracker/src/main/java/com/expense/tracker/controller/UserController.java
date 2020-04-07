@@ -1,5 +1,6 @@
 package com.expense.tracker.controller;
 
+import com.expense.tracker.models.BaseResponse;
 import com.expense.tracker.models.User;
 import com.expense.tracker.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +13,12 @@ public class UserController {
   @Autowired IUserService userService;
 
   @GetMapping("/user")
-  public @ResponseBody User userDetails(@RequestParam String emailId) {
+  public @ResponseBody BaseResponse<User> userDetails(@RequestParam String emailId) {
     return userService.getUserDetails(emailId);
   }
 
   @PostMapping("/registration/user")
-  public @ResponseBody User newUsser(@RequestBody User newUser) {
-    return newUser;
+  public @ResponseBody BaseResponse<User> newUsser(@RequestBody User newUser) {
+    return userService.createNewUser(newUser);
   }
 }
