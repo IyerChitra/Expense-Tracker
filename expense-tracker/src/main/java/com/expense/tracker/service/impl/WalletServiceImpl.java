@@ -42,7 +42,7 @@ public class WalletServiceImpl implements IWalletService {
 		SqlParameterSource inputParameter = new MapSqlParameterSource().addValue("in_wallet_id", walletId);
 
 		Map<String, Object> out = simpleJdbcCall.execute(inputParameter);
-		// System.out.println(out.get("walletDetails"));
+		
 		List<Wallet> wallet = (List<Wallet>) out.get("walletDetails");
 		List<Map> walletUsers = (List<Map>) out.get("walletUsers");
 
@@ -50,7 +50,7 @@ public class WalletServiceImpl implements IWalletService {
 			throw new WalletNotFoundException(walletName);
 		}
 		else{
-			wallet.get(0).setWalletUsers(walletUsers);
+			wallet.get(0).setWalletUsers(walletUsers.get(0));
 		}
 		return wallet.get(0);
 	}
@@ -72,13 +72,11 @@ public class WalletServiceImpl implements IWalletService {
 			
 			if (responseCode == 0) {
 				newWallet.setWalletId((Long) out.get("out_walletid"));
-				newWallet.setCreatedTime((Date) out.get("out_created_time"));
+				newWallet.setCreatedTime(new Date());
 				Map<Long, String> walletUser = new HashMap<Long, String>();
-				
 				walletUser.put((Long) out.get("out_walletid"), (String) out.get("out_first_name"));
-				List<Map> walletUsersList = new ArrayList();
-				walletUsersList.add(walletUser);
-				newWallet.setWalletUsers(walletUsersList);
+				
+				newWallet.setWalletUsers(walletUser);
 				
 			}
 			if (responseCode == -1) {
@@ -110,8 +108,8 @@ public class WalletServiceImpl implements IWalletService {
 		Map<String, Object> out = simpleJdbcCall.execute(inputParameter);
 				int responseCode = (int) out.get("response_code");
 				if(responseCode == 0){
-					List <Map> walletUsers = wallet.getWalletUsers();
-					walletUsers.add((Map) new HashMap().put((Long) out.get("out_userid"), out.get("out_first_name")));
+					Map walletUsers = wallet.getWalletUsers();
+					walletUsers.put((Long) out.get("out_userid"), out.get("out_first_name"));
 				}
 				if(responseCode == -1){
 					if("USER_NOT_FOUND".equals((String) out.get("error_code"))){

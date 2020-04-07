@@ -3,6 +3,6 @@
 .idea/
 /target
 ../.vscode/
-.settings/org.eclipse.jdt.apt.core.prefs
-expense-tracker/.settings/org.eclipse.jdt.core.prefs
+.settings/
+expense-tracker/.settings
 expense-tracker/.classpath

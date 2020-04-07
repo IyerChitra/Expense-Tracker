@@ -14,7 +14,7 @@ public class Wallet {
 	private Long createdBy;
 	private Date createdTime;
 	private String status;
-	private List<Map> walletUsers;
+	private Map<Long, String> walletUsers;
 
 	public Long getWalletId() {
 		return walletId;
@@ -64,11 +64,11 @@ public class Wallet {
 		this.status = status;
 	}
 
-	public List<Map> getWalletUsers() {
+	public Map<Long, String> getWalletUsers() {
 		return walletUsers;
 	}
 
-	public void setWalletUsers(List<Map> walletUsers) {
+	public void setWalletUsers(Map<Long, String> walletUsers) {
 		this.walletUsers = walletUsers;
 	}
 }

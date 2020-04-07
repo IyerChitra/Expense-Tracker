@@ -9,6 +9,8 @@ import com.expense.tracker.mappers.UserWalletRowMapper;
 import com.expense.tracker.models.User;
 import com.expense.tracker.models.Wallet;
 import com.expense.tracker.service.IUserService;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.slf4j.LoggerFactory;
@@ -37,16 +39,20 @@ public class UserServiceImpl implements IUserService {
 		User user = null;
 		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("fetch_user_details_v1dot0")
 				.returningResultSet("userDetails", new UserDetailRowMapper())
-				.returningResultSet("walletId", new UserWalletRowMapper());
+				.returningResultSet("userWallets", new UserWalletRowMapper());
 
 		SqlParameterSource inputParameter = new MapSqlParameterSource().addValue("in_email_id", emailId.toLowerCase());
 
 		Map<String, Object> out = simpleJdbcCall.execute(inputParameter);
+		System.out.println("inside getUserDetails + RowMap");
 		List<User> users = (List<User>) out.get("userDetails");
+		System.out.println(users);
 		if (!users.isEmpty()) {
-			List<Wallet> wallets = (List<Wallet>) out.get("walletId");
+			List<Map> wallets = (List<Map>) out.get("userWallets");
+			System.out.println(wallets);	
 			user = users.get(0);
-			user.setWalletId(wallets);
+			if(!wallets.isEmpty())
+			user.setUserWallets((Map<Long, String>) wallets.get(0));
 		} else {
 			throw new UserNotFoundException(emailId);
 		}

@@ -1,6 +1,7 @@
 package com.expense.tracker.models;
 
-import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -11,7 +12,7 @@ public class User {
 	private String lastName;
 	private String emailId;
 	private String mobileNo;
-	private List<Wallet> walletId;
+	private Map<Long, String> userWallets;
 
 	public Long getUserId() {
 		return userId;
@@ -53,11 +54,11 @@ public class User {
 		this.mobileNo = mobileNo;
 	}
 
-	public List<Wallet> getWalletId() {
-		return walletId;
+	public Map<Long, String> getUserWallets() {
+		return userWallets;
 	}
 
-	public void setWalletId(List<Wallet> walletId) {
-		this.walletId = walletId;
+	public void setUserWallets(Map<Long, String> userWallets) {
+		this.userWallets = userWallets;
 	}
 }
