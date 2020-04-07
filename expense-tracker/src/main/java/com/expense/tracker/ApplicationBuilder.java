@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableAutoConfiguration
 public class ApplicationBuilder {
 
-    public static void main(String[] args) {
-        SpringApplication.run(ApplicationBuilder.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(ApplicationBuilder.class, args);
+	}
 }
