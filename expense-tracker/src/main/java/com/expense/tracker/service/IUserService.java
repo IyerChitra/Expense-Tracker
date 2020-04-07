@@ -1,13 +1,15 @@
 package com.expense.tracker.service;
 
-import com.expense.tracker.models.BaseResponse;
+import com.expense.tracker.exceptions.ExpenseTrackerException;
 import com.expense.tracker.models.User;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 @Component
 public interface IUserService {
 
-    BaseResponse<User> getUserDetails(String userId);
+    ResponseEntity<User> getUserDetails(String userId) throws Exception;
     
-    BaseResponse<User> createNewUser(User user);
+    ResponseEntity<User> createNewUser(User user) throws ExpenseTrackerException;
 }
