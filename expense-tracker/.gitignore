@@ -4,3 +4,5 @@
 /target
 ../.vscode/
 .settings/org.eclipse.jdt.apt.core.prefs
+expense-tracker/.settings/org.eclipse.jdt.core.prefs
+expense-tracker/.classpath
