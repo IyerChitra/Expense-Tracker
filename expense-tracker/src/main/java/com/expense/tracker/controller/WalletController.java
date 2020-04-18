@@ -1,8 +1,8 @@
 package com.expense.tracker.controller;
 
 import com.expense.tracker.exceptions.ExpenseTrackerException;
-import com.expense.tracker.models.User;
-import com.expense.tracker.service.IUserService;
+import com.expense.tracker.models.Wallet;
+import com.expense.tracker.service.IWalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,19 +14,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/expense-tracker")
-public class UserController {
+@RequestMapping("/expense-tracker/user")
+public class WalletController {
 
-  @Autowired IUserService userService;
+  @Autowired IWalletService walletService;
 
-  @GetMapping("/user")
-  public @ResponseBody User userDetails(@RequestParam String emailId){
-    return userService.getUserDetails(emailId);
+  @GetMapping("/wallet")
+  public @ResponseBody ResponseEntity<Wallet> walletDetails(
+      @RequestParam String emailId, @RequestParam String walletName) throws Exception {
+    return walletService.getWalletDetails(emailId, walletName);
   }
 
-  @PostMapping("/registration/user")
-  public @ResponseBody ResponseEntity<User> newUsser(@RequestBody User newUser)
+  @PostMapping("/createWallet")
+  public @ResponseBody ResponseEntity<Wallet> newUsser(@RequestBody Wallet newWallet)
       throws ExpenseTrackerException {
-    return userService.createNewUser(newUser);
+    return walletService.createNewWallet(newWallet);
   }
 }

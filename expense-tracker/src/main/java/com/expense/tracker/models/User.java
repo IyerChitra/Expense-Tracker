@@ -1,5 +1,9 @@
 package com.expense.tracker.models;
 
+import java.util.List;
+import org.springframework.stereotype.Component;
+
+@Component
 public class User {
 
   private Long userId;
@@ -7,7 +11,7 @@ public class User {
   private String lastName;
   private String emailId;
   private String mobileNo;
-  private String walletId;
+  private List<Wallet> walletId;
 
   public Long getUserId() {
     return userId;
@@ -49,11 +53,11 @@ public class User {
     this.mobileNo = mobileNo;
   }
 
-  public String getWalletId() {
+  public List<Wallet> getWalletId() {
     return walletId;
   }
 
-  public void setWalletId(String walletId) {
+  public void setWalletId(List<Wallet> walletId) {
     this.walletId = walletId;
   }
 }

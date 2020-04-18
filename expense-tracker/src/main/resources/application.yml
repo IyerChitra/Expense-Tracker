@@ -1,9 +1,12 @@
 # Application server config.
 server:
   port: 8081
-  
+
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/expense_tracker
-    username: admin
-    password: admin@123
+    url: jdbc:mysql://localhost:3306/expense-tracker
+    username: root
+    password: crazy31$
+#    url: jdbc:mysql://localhost:3306/expense_tracker
+#    username: admin
+#    password: Admin@123
