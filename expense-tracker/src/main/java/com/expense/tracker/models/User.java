@@ -1,7 +1,9 @@
 package com.expense.tracker.models;
 
 import java.util.List;
+import org.springframework.stereotype.Component;
 
+@Component
 public class User {
 
   private Long userId;

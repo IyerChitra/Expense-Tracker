@@ -1,8 +1,10 @@
 package com.expense.tracker.exceptions;
 
-public class UserNotFoundException extends Exception {
+import com.expense.tracker.constants.ErrorCode;
 
-	public UserNotFoundException(final String userId) {
-        super(String.format("User ID '%s' not found! Please Register as new User.", userId));
-    }
+public class UserNotFoundException extends ExpenseTrackerException {
+
+  public UserNotFoundException(String var1) {
+    super(var1, ErrorCode.USER_NOT_FOUND);
+  }
 }
