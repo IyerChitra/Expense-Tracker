@@ -3,7 +3,7 @@ create procedure insert_wallet_user_v1dot0 (
     IN in_wallet_id bigint,
     IN in_email_id varchar(100),
     OUT out_userid bigint,
-    OUT out__first_name varchar(50),
+    OUT out_first_name varchar(50),
     OUT response_code int,
     OUT error_code varchar(100),
     OUT error_desc text
@@ -44,9 +44,10 @@ begin
   select count(*) into count from t_user_details where f_email = in_email_id;
   
   IF count = 1 THEN
-  	insert into t_user_wallet_ref(f_email_id, f_wallet_id, f_created_time)
+  	SET out_userid = (select t_user_details.f_id from t_user_details where  t_user_details.f_email = in_email_id);
+  	insert into t_user_wallet_ref(f_user_id, f_wallet_id, f_created_time)
   	 values(
-  	 in_email_id,
+  	 out_userid,
   	 in_wallet_id,
   	 (select t_wallet_details.f_created_time from t_wallet_details where t_wallet_details.f_id = in_wallet_id));
     
@@ -59,7 +60,7 @@ begin
     
    END IF;
    
-   SET out_userid = (select t_user_details.f_id from t_user_details where  t_user_details.f_email = in_email_id);
+   
    SET out_first_name = (select t_user_details.f_first_name from t_user_details where t_user_details.f_email = in_email_id);
    
      end $$

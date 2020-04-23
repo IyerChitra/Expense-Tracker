@@ -15,11 +15,11 @@ import org.springframework.stereotype.Component;
 public class UserWalletRowMapper implements RowMapper<Map> {
 	Logger logger = (Logger) LoggerFactory.getLogger(UserWalletRowMapper.class);
 	Map<Long, String> userWallets = new HashMap<Long, String>();
+
 	@Override
 	public Map mapRow(ResultSet resultSet, int i) {
-		
+
 		try {
-			
 			userWallets.put(resultSet.getLong("f_id"), resultSet.getString("f_wallet_name"));
 		} catch (SQLException e) {
 			logger.debug("SQL Exception while executing the Row Mapper" + e);

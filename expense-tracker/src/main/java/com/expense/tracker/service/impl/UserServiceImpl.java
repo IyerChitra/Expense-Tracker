@@ -34,27 +34,27 @@ public class UserServiceImpl implements IUserService {
 	Logger logger = (Logger) LoggerFactory.getLogger(UserServiceImpl.class);
 
 	@Override
-	public User getUserDetails(String emailId) {
+	public User getUserDetails(Long userId) {
 
 		User user = null;
 		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("fetch_user_details_v1dot0")
 				.returningResultSet("userDetails", new UserDetailRowMapper())
 				.returningResultSet("userWallets", new UserWalletRowMapper());
 
-		SqlParameterSource inputParameter = new MapSqlParameterSource().addValue("in_email_id", emailId.toLowerCase());
+		SqlParameterSource inputParameter = new MapSqlParameterSource().addValue("in_user_id", userId);
 
 		Map<String, Object> out = simpleJdbcCall.execute(inputParameter);
-		System.out.println("inside getUserDetails + RowMap");
+
 		List<User> users = (List<User>) out.get("userDetails");
-		System.out.println(users);
+
 		if (!users.isEmpty()) {
 			List<Map> wallets = (List<Map>) out.get("userWallets");
-			System.out.println(wallets);	
+
 			user = users.get(0);
-			if(!wallets.isEmpty())
-			user.setUserWallets((Map<Long, String>) wallets.get(0));
+			if (!wallets.isEmpty())
+				user.setUserWallets((Map<Long, String>) wallets.get(0));
 		} else {
-			throw new UserNotFoundException(emailId);
+			throw new UserNotFoundException(userId.toString());
 		}
 
 		return user;

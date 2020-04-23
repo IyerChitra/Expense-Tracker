@@ -48,14 +48,14 @@ begin
     in_user_id
     );
     
-    insert into t_user_wallet_ref(f_email_id, f_wallet_id)
+    SET out_walletid = last_insert_id();
+    
+    insert into t_user_wallet_ref(f_user_id, f_wallet_id)
     values(
-    (select t_user_details.f_email from t_user_details where t_user_details.f_id = in_user_id),
-    (select t_wallet_details.f_id from t_wallet_details where t_wallet_details.f_wallet_name = in_wallet_name and t_wallet_details.f_created_by = in_user_id)
-    );
+    in_user_id,
+    out_walletid);
   commit;
   SET response_code = 0;
-    SET out_walletid = (select t_wallet_details.f_id from t_wallet_details where t_wallet_details.f_wallet_name = in_wallet_name and t_wallet_details.f_created_by = in_user_id);
-    SET out_first_name = (select f_first_name from t_user_details inner join t_user_wallet_ref on t_user_details.f_email = t_user_wallet_ref.f_email_id inner join t_wallet_details on user_wallet_ref.f_wallet_id = t_wallet_details.f_id where t_wallet_details.f_wallet_name = in_wallet_name and t_wallet_details.f_created_by = in_user_id);
+  SET out_first_name = (select f_first_name from t_user_details where f_id = in_user_id);
 end $$
 DELIMITER ;

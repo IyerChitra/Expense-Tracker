@@ -19,8 +19,8 @@ public class UserController {
 	IUserService userService;
 
 	@GetMapping("/user")
-	public @ResponseBody User userDetails(@RequestParam String emailId) {
-		return userService.getUserDetails(emailId);
+	public @ResponseBody User userDetails(@RequestParam Long userId) {
+		return userService.getUserDetails(userId);
 	}
 
 	@PostMapping("/registration/user")

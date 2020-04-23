@@ -10,7 +10,7 @@ create table t_user_details (
 
 create table t_user_wallet_ref (
   f_id bigint primary key auto_increment,
-  f_email_id varchar(100) not null references t_user_details(f_email),
+  f_user_id bigint not null references t_user_details(f_id),
   f_wallet_id bigint not null REFERENCES t_wallet_details(f_id),
   f_created_time timestamp default current_timestamp,
   f_updated_time timestamp default current_timestamp on UPDATE CURRENT_TIMESTAMP

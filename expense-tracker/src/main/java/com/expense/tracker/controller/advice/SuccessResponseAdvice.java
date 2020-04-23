@@ -12,23 +12,18 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 @ControllerAdvice
 public class SuccessResponseAdvice implements ResponseBodyAdvice<Object> {
 
-  @Override
-  public boolean supports(MethodParameter methodParameter, Class aClass) {
-    return false;
-  }
+	@Override
+	public boolean supports(MethodParameter methodParameter, Class aClass) {
+		return false;
+	}
 
-  @Override
-  public Object beforeBodyWrite(
-      Object o,
-      MethodParameter methodParameter,
-      MediaType mediaType,
-      Class aClass,
-      ServerHttpRequest serverHttpRequest,
-      ServerHttpResponse serverHttpResponse) {
+	@Override
+	public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class aClass,
+			ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
 
-    if (methodParameter.getContainingClass().isAnnotationPresent(RestController.class)) {
-      return new BaseResponse<>(o, null, null);
-    }
-    return o;
-  }
+		if (methodParameter.getContainingClass().isAnnotationPresent(RestController.class)) {
+			return new BaseResponse<>(o, null, null);
+		}
+		return o;
+	}
 }

@@ -13,9 +13,10 @@ import org.springframework.stereotype.Component;
 public class WalletUserRowMapper implements RowMapper<Map> {
 	Logger logger = (Logger) LoggerFactory.getLogger(WalletUserRowMapper.class);
 	Map<Long, String> walletUsers = new HashMap<Long, String>();
+
 	@Override
 	public Map mapRow(ResultSet resultSet, int i) {
-		
+
 		try {
 			walletUsers.put(resultSet.getLong("f_id"), resultSet.getString("f_first_name"));
 
