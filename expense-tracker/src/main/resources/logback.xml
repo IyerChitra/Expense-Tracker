@@ -30,7 +30,7 @@
     </rollingPolicy>
   </appender>
 
-  <logger additivity="false" level="debug" name="com.project">
+  <logger additivity="false" level="debug" name="com.expense.tracker">
     <appender-ref ref="rollingFile"/>
     <appender-ref ref="console"/>
   </logger>

@@ -1,0 +1,16 @@
+2020-04-16 21:57:47,164 INFO org.springframework.boot.StartupInfoLogger [main] Starting ApplicationBuilder on PPH-LAP-00458 with PID 18403 (/home/srivatsav/Documents/Expense-Tracker/expense-tracker/target/classes started by srivatsav in /home/srivatsav/Documents/Expense-Tracker/expense-tracker)
+2020-04-16 21:57:47,167 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-04-16 21:57:47,620 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2020-04-16 21:57:47,637 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 12ms. Found 0 JDBC repository interfaces.
+2020-04-16 21:57:47,804 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-16 21:57:47,979 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8081 (http)
+2020-04-16 21:57:47,987 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8081"]
+2020-04-16 21:57:47,988 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-04-16 21:57:47,988 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.30]
+2020-04-16 21:57:48,035 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-04-16 21:57:48,035 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 827 ms
+2020-04-16 21:57:48,252 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-04-16 21:57:48,424 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8081"]
+2020-04-16 21:57:48,443 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8081 (http) with context path ''
+2020-04-16 21:57:48,446 INFO org.springframework.boot.StartupInfoLogger [main] Started ApplicationBuilder in 1.557 seconds (JVM running for 1.958)
+2020-04-16 21:57:51,331 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [SpringContextShutdownHook] Shutting down ExecutorService 'applicationTaskExecutor'
