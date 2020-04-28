@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ch.qos.logback.classic.Logger;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -28,7 +28,8 @@ public class WalletServiceImpl implements IWalletService {
 
 	@Autowired
 	JdbcTemplate jdbcTemplate;
-	Logger logger = (Logger) LoggerFactory.getLogger(WalletServiceImpl.class);
+
+	Logger logger = LoggerFactory.getLogger(WalletServiceImpl.class);
 
 	@Override
 	public Wallet getWalletDetails(Long walletId, String walletName) {

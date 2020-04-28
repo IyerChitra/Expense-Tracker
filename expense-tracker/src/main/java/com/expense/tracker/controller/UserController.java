@@ -12,19 +12,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/expense-tracker")
+@RequestMapping("/user")
 public class UserController {
 
 	@Autowired
 	IUserService userService;
 
-	@GetMapping("/user")
+	@GetMapping("")
 	public @ResponseBody User userDetails(@RequestParam Long userId) {
 		return userService.getUserDetails(userId);
 	}
 
-	@PostMapping("/registration/user")
+	@PostMapping("/registration")
 	public @ResponseBody User newUsser(@RequestBody User newUser) {
 		return userService.createNewUser(newUser);
 	}
+
+	//TODO: email text search API for users.
 }

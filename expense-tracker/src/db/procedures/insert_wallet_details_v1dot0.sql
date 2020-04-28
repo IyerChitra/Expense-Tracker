@@ -56,6 +56,5 @@ begin
     out_walletid);
   commit;
   SET response_code = 0;
-  SET out_first_name = (select f_first_name from t_user_details where f_id = in_user_id);
 end $$
 DELIMITER ;
