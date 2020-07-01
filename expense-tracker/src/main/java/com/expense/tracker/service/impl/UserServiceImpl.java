@@ -1,16 +1,22 @@
 package com.expense.tracker.service.impl;
 
 import ch.qos.logback.classic.Logger;
+import org.springframework.jdbc.core.RowMapper;
 import com.expense.tracker.constants.ErrorCode;
 import com.expense.tracker.exceptions.ExpenseTrackerException;
 import com.expense.tracker.exceptions.UserNotFoundException;
 import com.expense.tracker.mappers.UserDetailRowMapper;
 import com.expense.tracker.mappers.UserWalletRowMapper;
+import com.expense.tracker.models.Pagination;
 import com.expense.tracker.models.User;
 import com.expense.tracker.models.Wallet;
 import com.expense.tracker.service.IUserService;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.slf4j.LoggerFactory;
@@ -35,7 +41,7 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public User getUserDetails(Long userId) {
-
+		logger.debug("Getting user dteails for userId: " + userId);
 		User user = null;
 		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("fetch_user_details_v1dot0")
 				.returningResultSet("userDetails", new UserDetailRowMapper())
@@ -62,7 +68,6 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public User createNewUser(User newUser) {
-		/* Using JDBC Insert */
 		logger.debug("Trying to create New User with emailID: ".concat(newUser.getEmailId()));
 		try {
 			SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("t_user_details")
@@ -95,4 +100,18 @@ public class UserServiceImpl implements IUserService {
 
 		return newUser;
 	}
+
+	@Override
+	public List<User> getUserList(String emailId, Long walletId, Pagination page) {
+
+		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("fetch_user_email_v1dot0")
+				.returningResultSet("userDetails", new UserDetailRowMapper());
+		SqlParameterSource inputParameter = new MapSqlParameterSource().addValue("in_email_Id", emailId)
+				.addValue("in_wallet_id", walletId).addValue("in_offset", page.getOffset()).addValue("in_limit", page.getLimit());
+
+		Map<String, Object> out = simpleJdbcCall.execute(inputParameter);
+		List<User> users = (List<User>) out.get("userDetails");
+		return users;
+	}
+
 }

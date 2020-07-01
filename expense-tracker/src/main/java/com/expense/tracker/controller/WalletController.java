@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/wallet")
+@RequestMapping("expense-tracker/wallet")
 public class WalletController {
 
 	@Autowired
@@ -31,9 +32,9 @@ public class WalletController {
 		return walletService.createNewWallet(newWallet);
 	}
 
-	@PostMapping("/addUser/{walletId}")
-	public @ResponseBody Wallet addUser(@RequestBody List<User> users, @PathVariable Long walletId) {
-		return walletService.addUser(wallet, emailId);
+	@PutMapping("/addUser/{walletId}") 
+	public @ResponseBody Long addUser(@RequestBody List<User> users, @PathVariable Long walletId) {
+		return walletService.addUser(users, walletId);
 	}
 
 }

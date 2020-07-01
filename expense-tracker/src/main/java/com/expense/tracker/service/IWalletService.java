@@ -1,6 +1,10 @@
 package com.expense.tracker.service;
 
+import com.expense.tracker.models.User;
 import com.expense.tracker.models.Wallet;
+
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -10,5 +14,5 @@ public interface IWalletService {
 
 	Wallet createNewWallet(Wallet wallet);
 
-	Wallet addUser(Wallet wallet, String emailId);
+	Long addUser(List<User> users, Long walletId);
 }

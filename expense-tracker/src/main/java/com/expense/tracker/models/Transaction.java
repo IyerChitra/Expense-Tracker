@@ -4,51 +4,78 @@ import java.util.Date;
 
 public class Transaction {
 
-	private String txnid;
-	private String walletId;
-	private String userName;
-	private String txntype;
-	private int txnAmount;
-	private Date txntime;
+	private Long txnid; //Long
+	private Long walletId;
+	private User user; // use user Object
+	private enum txntype{
+		CREDIT,
+		DEBIT
+	};
+	private enum txnStatus{
+		SUCCESS,
+		FAILED,
+		IN_PROGRESS
+	}
+	private txntype txnType;
+	private txnStatus status;
+	public txnStatus getStatus() {
+		return status;
+	}
 
-	public String getTxnid() {
+	public void setStatus(txnStatus status) {
+		this.status = status;
+	}
+
+	private Long txnAmount;
+	private Date txntime;
+	private String comments;
+	//comments string
+	//add txn status as enum
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
+	public void setTxnAmount(Long txnAmount) {
+		this.txnAmount = txnAmount;
+	}
+
+	public Long getTxnid() {
 		return txnid;
 	}
 
-	public void setTxnid(String txnid) {
+	public void setTxnid(Long txnid) {
 		this.txnid = txnid;
 	}
 
-	public String getWalletId() {
+	public Long getWalletId() {
 		return walletId;
 	}
 
-	public void setWalletId(String walletId) {
+	public void setWalletId(Long walletId) {
 		this.walletId = walletId;
 	}
 
-	public String getUserName() {
-		return userName;
+	
+
+	public txntype getTxntype() {
+		return txnType;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getTxntype() {
-		return txntype;
-	}
-
-	public void setTxntype(String txntype) {
-		this.txntype = txntype;
-	}
-
-	public int getTxnAmount() {
-		return txnAmount;
-	}
-
-	public void setTxnAmount(int txnAmount) {
-		this.txnAmount = txnAmount;
+	public void setTxntype(txntype txnType) {
+		this.txnType = txnType;
 	}
 
 	public Date getTxntime() {

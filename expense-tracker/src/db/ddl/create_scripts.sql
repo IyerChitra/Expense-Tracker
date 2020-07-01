@@ -32,6 +32,8 @@ create table t_txn_master(
   f_wallet_id bigint REFERENCES t_wallet_details(f_id),
   f_user_id bigint REFERENCES t_user_details(f_id),
   f_txn_type varchar(20) not null,
+  f_txn_status varchar(20) not null,
+  f_comments varchar(200) not null,
   f_txn_amount bigint not null,
   f_created_time timestamp default current_timestamp,
   f_updated_time timestamp default current_timestamp on UPDATE CURRENT_TIMESTAMP
