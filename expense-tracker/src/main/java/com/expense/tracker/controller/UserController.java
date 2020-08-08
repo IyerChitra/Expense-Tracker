@@ -28,7 +28,7 @@ public class UserController {
 	// TODO: email text search API for users., @RequestParam Pagination page
 	@GetMapping("/search")
 	public @ResponseBody List<User> getUserList(@RequestParam String emaildId, @RequestParam Long walletId) {
-		
+
 		Pagination page = new Pagination();
 		page.setLimit(10);
 		page.setOffset(0);

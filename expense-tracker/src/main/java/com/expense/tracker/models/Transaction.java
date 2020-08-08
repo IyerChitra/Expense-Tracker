@@ -5,7 +5,7 @@ import com.expense.tracker.constants.TxnType;
 
 public class Transaction {
 
-	private Long txnid; //Long
+	private Long txnid; // Long
 	private Wallet wallet;
 	private User user; // use user Object
 
@@ -15,10 +15,10 @@ public class Transaction {
 	private String errorCode;
 
 	private Long txnAmount;
-	private Long txntime;//ePOCH timestamp
+	private Long txntime;// ePOCH timestamp
 	private String comments;
-	//comments string
-	//add txn status as enum
+	// comments string
+	// add txn status as enum
 
 	public User getUser() {
 		return user;
@@ -67,7 +67,6 @@ public class Transaction {
 	public void setStatus(TxnStatus status) {
 		this.status = status;
 	}
-
 
 	public TxnType getTxnType() {
 		return txnType;

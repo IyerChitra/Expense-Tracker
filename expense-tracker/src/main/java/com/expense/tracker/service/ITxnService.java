@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 public interface ITxnService {
 
 	Transaction getTxnDetails(Long txnId);
-	
+
 	Transaction txnCredit(Transaction txn);
-	
+
 	Transaction txnDebit(Transaction txn);
 }

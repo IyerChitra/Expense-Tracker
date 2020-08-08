@@ -108,12 +108,14 @@ public class UserServiceImpl implements IUserService {
 		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("fetch_user_email_v1dot0")
 				.returningResultSet("userDetails", new UserDetailRowMapper());
 		SqlParameterSource inputParameter = new MapSqlParameterSource().addValue("in_email_Id", emailId)
-				.addValue("in_wallet_id", walletId).addValue("in_offset", page.getOffset()).addValue("in_limit", page.getLimit());
+				.addValue("in_wallet_id", walletId).addValue("in_offset", page.getOffset())
+				.addValue("in_limit", page.getLimit());
 
 		Map<String, Object> out = simpleJdbcCall.execute(inputParameter);
 		List<User> users = (List<User>) out.get("userDetails");
-		if(users.isEmpty()){
-			throw new ExpenseTrackerException("No users found with the given email. Please try some other user", ErrorCode.NO_SUCH_USER);
+		if (users.isEmpty()) {
+			throw new ExpenseTrackerException("No users found with the given email. Please try some other user",
+					ErrorCode.NO_SUCH_USER);
 		}
 		return users;
 	}

@@ -27,13 +27,14 @@ public class WalletController {
 		return walletService.createNewWallet(newWallet);
 	}
 
-	@PutMapping("/addUser/{walletId}") 
+	@PutMapping("/addUser/{walletId}")
 	public @ResponseBody Long addUser(@RequestBody List<User> users, @PathVariable Long walletId) {
 		return walletService.addUser(users, walletId);
 	}
 
 	@GetMapping("/getTxns")
-	public @ResponseBody List<Transaction> getTxnList(@RequestParam Long walletId, @RequestParam Long frmDate, @RequestParam Long toDate, @RequestBody Pagination page){
+	public @ResponseBody List<Transaction> getTxnList(@RequestParam Long walletId, @RequestParam Long frmDate,
+			@RequestParam Long toDate, @RequestBody Pagination page) {
 		return walletService.getTxnList(walletId, frmDate, toDate, page);
 	}
 

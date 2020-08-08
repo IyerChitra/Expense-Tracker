@@ -102,18 +102,27 @@ public class WalletServiceImpl implements IWalletService {
 		logger.debug("Adding Users to Wallet: " + walletId);
 
 		StringBuffer sb = new StringBuffer();
-		String userIds = users.stream().map(User::getUserId).map(l -> ((Long) l).toString()).collect(Collectors.joining(","));
+		String userIds = users.stream().map(User::getUserId).map(l -> ((Long) l).toString())
+				.collect(Collectors.joining(","));
 		System.out.println(userIds);
-		/*Iterator it = users.listIterator();
-		while (it.hasNext()) {
-			User user = (User) it.next();
-			sb.append(user.getUserId()).append(","); // use streams
-		}
-
-		String userIds = sb.substring(0, sb.length() - 1).toString();*/
+		/*
+		 * Iterator it = users.listIterator(); while (it.hasNext()) { User user
+		 * = (User) it.next(); sb.append(user.getUserId()).append(","); // use
+		 * streams }
+		 * 
+		 * String userIds = sb.substring(0, sb.length() - 1).toString();
+		 */
 
 		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate)
-				.withProcedureName("insert_bulk_user_wallet_ref_v1dot0"); // modify the sp to increment the index, also transaction
+				.withProcedureName("insert_bulk_user_wallet_ref_v1dot0"); // modify
+																			// the
+																			// sp
+																			// to
+																			// increment
+																			// the
+																			// index,
+																			// also
+																			// transaction
 		SqlParameterSource inputParameter = new MapSqlParameterSource().addValue("in_wallet_id", walletId)
 				.addValue("user_ids", userIds);
 
@@ -133,26 +142,29 @@ public class WalletServiceImpl implements IWalletService {
 		return walletId;
 	}
 
-
 	@Override
 	public List<Transaction> getTxnList(Long walletId, Long fromDate, Long toDate, Pagination page) {
 		// TODO Auto-generated method stub
 		logger.debug("Getting transactions for WalletId: ".concat(walletId.toString()));
 		Transaction txn = null;
 		List<Transaction> txnList;
-		try{
-			SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("fetch_wallet_txns_v1dot0").returningResultSet("txnDetails", new TxnDetailRowMapper());
-			SqlParameterSource inputParameters = new MapSqlParameterSource().addValue("f_wallet_id", walletId).addValue("in_from_date", fromDate).addValue("in_to_date", toDate).addValue("in_offset", page.getOffset()).addValue("in_limit", page.getLimit());;
+		try {
+			SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate)
+					.withProcedureName("fetch_wallet_txns_v1dot0")
+					.returningResultSet("txnDetails", new TxnDetailRowMapper());
+			SqlParameterSource inputParameters = new MapSqlParameterSource().addValue("f_wallet_id", walletId)
+					.addValue("in_from_date", fromDate).addValue("in_to_date", toDate)
+					.addValue("in_offset", page.getOffset()).addValue("in_limit", page.getLimit());
+			;
 			Map<String, Object> out = simpleJdbcCall.execute(inputParameters);
 			txnList = (List<Transaction>) out.get("txnDetails");
-			if(txnList.isEmpty()){
+			if (txnList.isEmpty()) {
 				throw new TxnNotFoundException(walletId);
 			}
 			return txnList;
-		}catch(Exception e){
+		} catch (Exception e) {
 			logger.debug("SQL Exception while inserting new user details into t_user_details table." + e);
-			throw new ExpenseTrackerException("Technical Error! Please try again later.",
-					ErrorCode.TECHNICAL_ERROR);
+			throw new ExpenseTrackerException("Technical Error! Please try again later.", ErrorCode.TECHNICAL_ERROR);
 		}
 
 	}
