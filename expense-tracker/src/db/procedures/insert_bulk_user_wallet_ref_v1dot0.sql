@@ -8,6 +8,9 @@ CREATE PROCEDURE insert_bulk_user_wallet_ref_v1dot0(
     )
 BEGIN
 
+    declare idx INT default 1;
+    declare user_id longtext;
+
 -- SQLCODE 1364 is for not having value i.e null or empty.
   declare exit handler for 1364
     begin
@@ -35,15 +38,12 @@ BEGIN
     rollback;
   end;
 
-    declare idx INT default 1;
-    declare user_id longtext;
-
   start transaction;
 
     label: LOOP
 		
         SET user_id=SUBSTRING_INDEX(user_ids,',',idx);
-        idx = idx + 1;
+        SET idx = idx + 1;
         IF user_id='' THEN
 			LEAVE label;
         END IF; 

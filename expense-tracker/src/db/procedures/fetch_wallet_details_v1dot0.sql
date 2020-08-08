@@ -4,8 +4,10 @@ create procedure fetch_wallet_details_v1dot0 (
 )
 BEGIN
     select * from t_wallet_details where t_wallet_details.f_id = in_wallet_id;
-    select f_id, f_first_name from t_user_details where f_id
-    IN (select f_user_id from t_user_wallet_ref where f_wallet_id = in_wallet_id);
+    select t_user_details.f_id, t_user_details.f_first_name from t_user_details
+	join t_user_wallet_ref
+	on t_user_details.f_id = t_user_wallet_ref.f_user_id
+	where f_wallet_id = in_wallet_id;
 END $$
 DELIMITER ;
 

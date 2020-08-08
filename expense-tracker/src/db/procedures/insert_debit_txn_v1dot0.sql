@@ -1,10 +1,10 @@
 DELIMITER $$
-create procedure insert_wallet_details_v1dot0 (
+create procedure insert_debit_txn_v1dot0 (
     IN in_txnid bigint,
     IN in_walletid bigint,
     IN in_amount bigint,
-    IN in_wallet_amount,
-    IN in_error_code
+    IN in_wallet_amount bigint,
+    IN in_error_code varchar(20),
 
     OUT out_txn_id bigint,
     OUT response_code int,
@@ -12,6 +12,7 @@ create procedure insert_wallet_details_v1dot0 (
     OUT error_desc text
 )
 begin
+declare wallet_amt bigint;
 
 -- SQLCODE 1364 is for not having value i.e null or empty.
   declare exit handler for 1364
@@ -42,7 +43,7 @@ begin
     COMMIT;
   end;
 
-  declare wallet_amt bigint;
+  
   IF in_error_code = '' THEN
 
   start transaction;

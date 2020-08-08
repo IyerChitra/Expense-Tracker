@@ -60,7 +60,7 @@ public class UserServiceImpl implements IUserService {
 			if (!wallets.isEmpty())
 				user.setUserWallets((Map<Long, String>) wallets.get(0));
 		} else {
-			throw new UserNotFoundException(userId.toString());
+			throw new UserNotFoundException(userId);
 		}
 
 		return user;
@@ -103,6 +103,7 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public List<User> getUserList(String emailId, Long walletId, Pagination page) {
+		logger.debug("Trying to fetch users with emailID: ".concat(emailId));
 
 		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("fetch_user_email_v1dot0")
 				.returningResultSet("userDetails", new UserDetailRowMapper());
@@ -111,6 +112,9 @@ public class UserServiceImpl implements IUserService {
 
 		Map<String, Object> out = simpleJdbcCall.execute(inputParameter);
 		List<User> users = (List<User>) out.get("userDetails");
+		if(users.isEmpty()){
+			throw new ExpenseTrackerException("No users found with the given email. Please try some other user", ErrorCode.NO_SUCH_USER);
+		}
 		return users;
 	}
 

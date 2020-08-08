@@ -69,11 +69,11 @@ public class Transaction {
 	}
 
 
-	public TxnType getTxntype() {
+	public TxnType getTxnType() {
 		return txnType;
 	}
 
-	public void setTxntype(TxnType txnType) {
+	public void setTxnType(TxnType txnType) {
 		this.txnType = txnType;
 	}
 

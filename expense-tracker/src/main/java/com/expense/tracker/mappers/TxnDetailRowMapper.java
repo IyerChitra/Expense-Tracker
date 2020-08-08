@@ -28,7 +28,7 @@ public class TxnDetailRowMapper implements RowMapper<User> {
 			txn.setWallet(wallet);
 			user.setUserId(resultSet.getLong("f_user_id"));
 			txn.setUser(user);
-			txn.setTxntype(TxnType.valueOf(resultSet.getString("f_txn_type")));
+			txn.setTxnType(TxnType.valueOf(resultSet.getString("f_txn_type")));
 			txn.setStatus(TxnStatus.valueOf(resultSet.getString("f_txn_status")));
 			txn.setComments(resultSet.getString("f_comments"));
 			txn.setTxnAmount(resultSet.getLong("f_txn_amount"));

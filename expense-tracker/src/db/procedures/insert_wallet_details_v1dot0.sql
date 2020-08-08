@@ -49,7 +49,7 @@ begin
     );
     
     SET out_walletid = last_insert_id();
-    
+    SET out_first_name = select f_first_name from t_user_details where f_id=in_user_id;
     insert into t_user_wallet_ref(f_user_id, f_wallet_id)
     values(
     in_user_id,

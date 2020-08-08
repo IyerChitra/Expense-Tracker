@@ -25,9 +25,13 @@ public class UserController {
 		return userService.createNewUser(newUser);
 	}
 
-	// TODO: email text search API for users.
+	// TODO: email text search API for users., @RequestParam Pagination page
 	@GetMapping("/search")
-	public @ResponseBody List<User> userDetails(@RequestParam String emaildId, @RequestParam Long walletId, @RequestBody Pagination page) {
+	public @ResponseBody List<User> getUserList(@RequestParam String emaildId, @RequestParam Long walletId) {
+		
+		Pagination page = new Pagination();
+		page.setLimit(10);
+		page.setOffset(0);
 		return userService.getUserList(emaildId, walletId, page);
 	}
 

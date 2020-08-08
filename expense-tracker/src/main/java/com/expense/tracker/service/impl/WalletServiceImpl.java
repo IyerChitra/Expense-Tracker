@@ -102,7 +102,8 @@ public class WalletServiceImpl implements IWalletService {
 		logger.debug("Adding Users to Wallet: " + walletId);
 
 		StringBuffer sb = new StringBuffer();
-		String userIds = users.stream().map(Object::toString).collect(Collectors.joining(","));
+		String userIds = users.stream().map(User::getUserId).map(l -> ((Long) l).toString()).collect(Collectors.joining(","));
+		System.out.println(userIds);
 		/*Iterator it = users.listIterator();
 		while (it.hasNext()) {
 			User user = (User) it.next();
@@ -141,7 +142,7 @@ public class WalletServiceImpl implements IWalletService {
 		List<Transaction> txnList;
 		try{
 			SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("fetch_wallet_txns_v1dot0").returningResultSet("txnDetails", new TxnDetailRowMapper());
-			SqlParameterSource inputParameters = new MapSqlParameterSource().addValue("f_wallet_id", walletId);
+			SqlParameterSource inputParameters = new MapSqlParameterSource().addValue("f_wallet_id", walletId).addValue("in_from_date", fromDate).addValue("in_to_date", toDate).addValue("in_offset", page.getOffset()).addValue("in_limit", page.getLimit());;
 			Map<String, Object> out = simpleJdbcCall.execute(inputParameters);
 			txnList = (List<Transaction>) out.get("txnDetails");
 			if(txnList.isEmpty()){
