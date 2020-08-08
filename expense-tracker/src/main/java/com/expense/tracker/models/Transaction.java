@@ -1,33 +1,21 @@
 package com.expense.tracker.models;
 
-import java.util.Date;
+import com.expense.tracker.constants.TxnStatus;
+import com.expense.tracker.constants.TxnType;
 
 public class Transaction {
 
 	private Long txnid; //Long
-	private Long walletId;
+	private Wallet wallet;
 	private User user; // use user Object
-	private enum txntype{
-		CREDIT,
-		DEBIT
-	};
-	private enum txnStatus{
-		SUCCESS,
-		FAILED,
-		IN_PROGRESS
-	}
-	private txntype txnType;
-	private txnStatus status;
-	public txnStatus getStatus() {
-		return status;
-	}
 
-	public void setStatus(txnStatus status) {
-		this.status = status;
-	}
+	private TxnType txnType;
+	private TxnStatus status;
+
+	private String errorCode;
 
 	private Long txnAmount;
-	private Date txntime;
+	private Long txntime;//ePOCH timestamp
 	private String comments;
 	//comments string
 	//add txn status as enum
@@ -48,6 +36,10 @@ public class Transaction {
 		this.comments = comments;
 	}
 
+	public Long getTxnAmount() {
+		return txnAmount;
+	}
+
 	public void setTxnAmount(Long txnAmount) {
 		this.txnAmount = txnAmount;
 	}
@@ -60,29 +52,44 @@ public class Transaction {
 		this.txnid = txnid;
 	}
 
-	public Long getWalletId() {
-		return walletId;
+	public Wallet getWallet() {
+		return wallet;
 	}
 
-	public void setWalletId(Long walletId) {
-		this.walletId = walletId;
+	public void setWallet(Wallet wallet) {
+		this.wallet = wallet;
 	}
 
-	
+	public TxnStatus getStatus() {
+		return status;
+	}
 
-	public txntype getTxntype() {
+	public void setStatus(TxnStatus status) {
+		this.status = status;
+	}
+
+
+	public TxnType getTxntype() {
 		return txnType;
 	}
 
-	public void setTxntype(txntype txnType) {
+	public void setTxntype(TxnType txnType) {
 		this.txnType = txnType;
 	}
 
-	public Date getTxntime() {
+	public Long getTxntime() {
 		return txntime;
 	}
 
-	public void setTxntime(Date txntime) {
+	public void setTxntime(Long txntime) {
 		this.txntime = txntime;
+	}
+
+	public String getErrorCode() {
+		return errorCode;
+	}
+
+	public void setErrorCode(String errorCode) {
+		this.errorCode = errorCode;
 	}
 }

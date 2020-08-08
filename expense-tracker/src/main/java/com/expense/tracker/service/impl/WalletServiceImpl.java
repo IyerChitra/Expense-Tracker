@@ -2,31 +2,27 @@ package com.expense.tracker.service.impl;
 
 import com.expense.tracker.constants.ErrorCode;
 import com.expense.tracker.exceptions.ExpenseTrackerException;
+import com.expense.tracker.exceptions.TxnNotFoundException;
 import com.expense.tracker.exceptions.WalletNotFoundException;
+import com.expense.tracker.mappers.TxnDetailRowMapper;
 import com.expense.tracker.mappers.WalletDetailRowMapper;
 import com.expense.tracker.mappers.WalletUserRowMapper;
+import com.expense.tracker.models.Pagination;
+import com.expense.tracker.models.Transaction;
 import com.expense.tracker.models.User;
 import com.expense.tracker.models.Wallet;
 import com.expense.tracker.service.IWalletService;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsertOperations;
 import org.springframework.stereotype.Component;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class WalletServiceImpl implements IWalletService {
@@ -106,20 +102,57 @@ public class WalletServiceImpl implements IWalletService {
 		logger.debug("Adding Users to Wallet: " + walletId);
 
 		StringBuffer sb = new StringBuffer();
-		Iterator it = users.listIterator();
+		String userIds = users.stream().map(Object::toString).collect(Collectors.joining(","));
+		/*Iterator it = users.listIterator();
 		while (it.hasNext()) {
 			User user = (User) it.next();
 			sb.append(user.getUserId()).append(","); // use streams
 		}
 
-		String userIds = sb.substring(0, sb.length() - 1).toString();
+		String userIds = sb.substring(0, sb.length() - 1).toString();*/
+
 		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate)
 				.withProcedureName("insert_bulk_user_wallet_ref_v1dot0"); // modify the sp to increment the index, also transaction
 		SqlParameterSource inputParameter = new MapSqlParameterSource().addValue("in_wallet_id", walletId)
 				.addValue("user_ids", userIds);
 
 		Map<String, Object> out = simpleJdbcCall.execute(inputParameter);
-
+		int responseCode = (int) out.get("response_code");
+		if (responseCode == -1) {
+			if ("NULL_VALUE".equals((String) out.get("error_code"))) {
+				throw new ExpenseTrackerException((String) out.get("error_desc"), ErrorCode.NULL_VALUE);
+			} else if ("DUPLICATE_ENTRY".equals((String) out.get("error_code"))) {
+				throw new ExpenseTrackerException((String) out.get("error_desc"), ErrorCode.DUPLICATE_KEY);
+			} else {
+				throw new ExpenseTrackerException(
+						((String) out.get("error_code")).concat(" ").concat((String) out.get("error_desc")),
+						ErrorCode.TECHNICAL_ERROR);
+			}
+		}
 		return walletId;
+	}
+
+
+	@Override
+	public List<Transaction> getTxnList(Long walletId, Long fromDate, Long toDate, Pagination page) {
+		// TODO Auto-generated method stub
+		logger.debug("Getting transactions for WalletId: ".concat(walletId.toString()));
+		Transaction txn = null;
+		List<Transaction> txnList;
+		try{
+			SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("fetch_wallet_txns_v1dot0").returningResultSet("txnDetails", new TxnDetailRowMapper());
+			SqlParameterSource inputParameters = new MapSqlParameterSource().addValue("f_wallet_id", walletId);
+			Map<String, Object> out = simpleJdbcCall.execute(inputParameters);
+			txnList = (List<Transaction>) out.get("txnDetails");
+			if(txnList.isEmpty()){
+				throw new TxnNotFoundException(walletId);
+			}
+			return txnList;
+		}catch(Exception e){
+			logger.debug("SQL Exception while inserting new user details into t_user_details table." + e);
+			throw new ExpenseTrackerException("Technical Error! Please try again later.",
+					ErrorCode.TECHNICAL_ERROR);
+		}
+
 	}
 }

@@ -1,19 +1,14 @@
 package com.expense.tracker.controller;
 
+import com.expense.tracker.models.Pagination;
+import com.expense.tracker.models.Transaction;
 import com.expense.tracker.models.User;
 import com.expense.tracker.models.Wallet;
 import com.expense.tracker.service.IWalletService;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("expense-tracker/wallet")
@@ -35,6 +30,11 @@ public class WalletController {
 	@PutMapping("/addUser/{walletId}") 
 	public @ResponseBody Long addUser(@RequestBody List<User> users, @PathVariable Long walletId) {
 		return walletService.addUser(users, walletId);
+	}
+
+	@GetMapping("/getTxns")
+	public @ResponseBody List<Transaction> getTxnList(@RequestParam Long walletId, @RequestParam Long frmDate, @RequestParam Long toDate, @RequestBody Pagination page){
+		return walletService.getTxnList(walletId, frmDate, toDate, page);
 	}
 
 }

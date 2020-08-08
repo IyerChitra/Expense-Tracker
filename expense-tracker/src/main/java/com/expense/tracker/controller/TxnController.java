@@ -1,19 +1,9 @@
 package com.expense.tracker.controller;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.expense.tracker.models.Pagination;
 import com.expense.tracker.models.Transaction;
 import com.expense.tracker.service.ITxnService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/expense-tracker/txn")
@@ -22,10 +12,10 @@ public class TxnController {
 	@Autowired
 	ITxnService txnService;
 
-	@GetMapping("")
-	public @ResponseBody List<Transaction> getTxns(@RequestParam Long walletId, @RequestBody Pagination page){
-		return txnService.getTxns(walletId, page);
-	}
+@GetMapping("")
+public @ResponseBody Transaction getTxnDetails(@RequestParam Long txnId){
+	return txnService.getTxnDetails(txnId);
+}
 	
 	@PostMapping("/credit")
 	public @ResponseBody Transaction txnCredit(@RequestBody Transaction txn){

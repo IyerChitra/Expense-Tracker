@@ -1,16 +1,12 @@
 package com.expense.tracker.service;
 
-import java.util.List;
-
-import org.springframework.stereotype.Component;
-
-import com.expense.tracker.models.Pagination;
 import com.expense.tracker.models.Transaction;
+import org.springframework.stereotype.Component;
 
 @Component
 public interface ITxnService {
 
-	List<Transaction> getTxns(Long walletId, Pagination page);
+	Transaction getTxnDetails(Long txnId);
 	
 	Transaction txnCredit(Transaction txn);
 	
