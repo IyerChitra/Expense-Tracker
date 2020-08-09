@@ -6,7 +6,5 @@ create procedure fetch_txn_details_v1dot0 (
 )
 BEGIN
     select * from t_txn_master where f_txn_id = in_txn_id;
-
-
 END $$
 DELIMITER ;

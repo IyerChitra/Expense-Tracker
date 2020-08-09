@@ -146,7 +146,6 @@ public class WalletServiceImpl implements IWalletService {
 	public List<Transaction> getTxnList(Long walletId, Long fromDate, Long toDate, Pagination page) {
 		// TODO Auto-generated method stub
 		logger.debug("Getting transactions for WalletId: ".concat(walletId.toString()));
-		Transaction txn = null;
 		List<Transaction> txnList;
 		try {
 			SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate)

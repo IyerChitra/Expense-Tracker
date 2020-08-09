@@ -3,12 +3,12 @@ package com.expense.tracker.models;
 import com.expense.tracker.constants.TxnStatus;
 import com.expense.tracker.constants.TxnType;
 
+// FIXME: override toString() for all objects
 public class Transaction {
 
 	private Long txnid; // Long
 	private Wallet wallet;
 	private User user; // use user Object
-
 	private TxnType txnType;
 	private TxnStatus status;
 

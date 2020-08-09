@@ -51,15 +51,13 @@ begin
 
 IF in_error_code = '' THEN
   start transaction;
+
   SET wallet_amt = in_amount + in_wallet_amount;
 
   update t_txn_master set f_txn_status = 'IN_PROGRESS' where f_txn_id=in_txn_id;
   COMMIT;
-    
    SET out_txn_id = in_txn_id;
-    
   update t_wallet_details set f_amount = wallet_amt WHERE f_id=in_walletid;
-
   update t_txn_master set f_txn_status = 'SUCCESS' where f_txn_id=in_txn_id;
   commit;
 
@@ -67,7 +65,6 @@ IF in_error_code = '' THEN
     update t_txn_master set f_txn_status = 'FAILED' and f_error_code = in_error_code where f_txn_id = in_txn_id;
     COMMIT;
   END IF;
-
 
   SET response_code = 0;
 end $$

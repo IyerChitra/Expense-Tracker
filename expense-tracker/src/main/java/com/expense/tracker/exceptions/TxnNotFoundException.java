@@ -4,6 +4,7 @@ import com.expense.tracker.constants.ErrorCode;
 
 public class TxnNotFoundException extends ExpenseTrackerException {
 
+	//FIXME: Transaction NOT Found should be the message.
 	public TxnNotFoundException(String txnId) {
 		super(String.format("Unable to retrieve details for Transaction ID: '%s'! Please try again later.", txnId),
 				ErrorCode.TXN_NOT_FOUND);

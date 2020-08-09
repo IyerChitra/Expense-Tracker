@@ -7,6 +7,7 @@ import com.expense.tracker.constants.TxnType;
 import com.expense.tracker.exceptions.ExpenseTrackerException;
 import com.expense.tracker.exceptions.TransactionInvalidException;
 import com.expense.tracker.exceptions.TxnNotFoundException;
+import com.expense.tracker.mappers.TxnDetailRowMapper;
 import com.expense.tracker.mappers.UserDetailRowMapper;
 import com.expense.tracker.models.Pagination;
 import com.expense.tracker.models.Transaction;
@@ -30,47 +31,45 @@ public class TxnServiceImpl implements ITxnService {
 
 	@Autowired
 	JdbcTemplate jdbcTemplate;
-	Logger logger = (Logger) LoggerFactory.getLogger(TxnServiceImpl.class);
+
+	private static final Logger logger = (Logger) LoggerFactory.getLogger(TxnServiceImpl.class);
 
 	@Override
 	public Transaction getTxnDetails(Long txnId) {
-		logger.debug("Getting Transaction Details for txnId: " + txnId);
-		Transaction txn = null;
-		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("fetch_txn_details_v1dot0")
-				.returningResultSet("txnDetails", new UserDetailRowMapper());
+		logger.debug("Getting Transaction Details for txnId: {}", txnId);
+		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate)
+				.withProcedureName("fetch_txn_details_v1dot0")
+				.returningResultSet("txnDetails", new TxnDetailRowMapper());
 
 		SqlParameterSource inputParameter = new MapSqlParameterSource().addValue("in_txn_id", txnId);
-
 		Map<String, Object> out = simpleJdbcCall.execute(inputParameter);
-
 		List<Transaction> txns = (List<Transaction>) out.get("txnDetails");
 
 		if (!txns.isEmpty()) {
-			txn = txns.get(0);
+			return txns.get(0);
 		} else {
 			throw new TxnNotFoundException(txnId.toString());
 		}
-
-		return txn;
 	}
 
 	@Override
 	public Transaction txnCredit(Transaction txn) {
 		// CHECK FOR VALIDATIONS AND RAISE ERRORS
-		logger.debug("Recording Credit Transaction by: ".concat(txn.getUser().toString()).concat(" to wallet: ")
-				.concat(txn.getWallet().getWalletId().toString()));
+		logger.debug("Recording Credit Transaction by: {},{}", txn.getUser(), txn.getWallet());
 		SimpleJdbcCall simpleJdbcCall = null;
 		try {
 			Long txnId = createTxnId();
-			logger.debug("Inserting Transaction with ID: ".concat(txnId.toString()));
-			SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("t_txn_master")
+			logger.debug("Inserting Transaction with ID: {}", txnId);
+			SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+					.withTableName("t_txn_master")
 					.usingGeneratedKeyColumns("f_id");
 			SqlParameterSource insertParameter = new MapSqlParameterSource().addValue("f_txn_id", txnId)
 					.addValue("f_wallet_id", txn.getWallet().getWalletId()).addValue("f_txn_amount", txn.getTxnAmount())
 					.addValue("f_comments", txn.getComments()).addValue("f_user_id", txn.getUser().getUserId())
-					.addValue("f_txn_type", txn.getTxnType()).addValue("f_txn_status", "INITIATED");
+					.addValue("f_txn_type", txn.getTxnType()).addValue("f_txn_status", TxnStaus.INITIATED);
 			simpleJdbcInsert.execute(insertParameter);
 
+			// FIXME: replace Wallet Object with just wallet Id
 			if (txn.getTxnType() == TxnType.CREDIT
 					&& txn.getWallet().getWalletUsers().containsKey(txn.getUser().getUserId())) {
 
@@ -109,7 +108,8 @@ public class TxnServiceImpl implements ITxnService {
 					}
 
 				}
-			} else {
+			}
+			else {
 				txn.setTxnid(txnId);
 				txn.setStatus(TxnStatus.FAILED);
 				simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("insert_credit_txn_v1dot0");
@@ -183,7 +183,7 @@ public class TxnServiceImpl implements ITxnService {
 					txn.setTxnid((Long) out.get("out_txn_id"));
 					txn.setStatus(TxnStatus.SUCCESS);
 				}
-				if (responseCode == -1) {
+				else (responseCode == -1) {
 					if ("NULL_VALUE".equals((String) out.get("error_code"))) {
 						throw new ExpenseTrackerException((String) out.get("error_desc"), ErrorCode.NULL_VALUE);
 					} else if ("DUPLICATE_ENTRY".equals((String) out.get("error_code"))) {
@@ -238,7 +238,8 @@ public class TxnServiceImpl implements ITxnService {
 		return txn;
 	}
 
-	public long createTxnId() {
+	//FIXME: harden this method
+	private synchronized static long createTxnId() {
 		// use hashing
 		Date dNow = new Date();
 		SimpleDateFormat ft = new SimpleDateFormat("yyMMddhhmmssMs");

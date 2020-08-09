@@ -32,7 +32,7 @@ public class WalletController {
 		return walletService.addUser(users, walletId);
 	}
 
-	@GetMapping("/getTxns")
+	@GetMapping("/transactions")
 	public @ResponseBody List<Transaction> getTxnList(@RequestParam Long walletId, @RequestParam Long frmDate,
 			@RequestParam Long toDate, @RequestBody Pagination page) {
 		return walletService.getTxnList(walletId, frmDate, toDate, page);
