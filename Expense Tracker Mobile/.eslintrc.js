@@ -15,6 +15,8 @@ module.exports = {
   plugins: ['react'],
   rules: {
     quotes: ['error', 'single', { avoidEscape: true }],
-    'comma-dangle': ['error', 'never']
+    'comma-dangle': ['error', 'never'],
+    'no-use-before-define': ['error', { variables: false }],
+    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }]
   }
 };
