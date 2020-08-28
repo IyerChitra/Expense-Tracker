@@ -8,14 +8,7 @@
  */
 
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar
-} from 'react-native';
+import { View } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import AppStackNavigator from './screens';
