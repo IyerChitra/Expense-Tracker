@@ -1,10 +1,25 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { Component } from 'react';
+import { View } from 'react-native';
+import WalletsComponent from '../components/Wallets';
+import AppHeader from '../components/Header';
 
-const WalletsScreen = () => (
-  <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    <Text>List of all Wallets</Text>
-  </View>
-);
+export default class WalletsScreen extends Component {
+  constructor(props) {
+    super(props);
+  }
+  static navigationOptions = {
+    header: { visible: false }
+  };
 
-export default WalletsScreen;
+  render() {
+    const { navigation } = this.props;
+    return (
+      <>
+        <AppHeader title="Wallets" />
+        <View style={{ flex: 1 }}>
+          <WalletsComponent navigation={navigation} />
+        </View>
+      </>
+    );
+  }
+}

@@ -19,4 +19,5 @@ HomeScreen.propTypes = {
   // eslint-disable-next-line react/require-default-props
   navigation: PropTypes.func
 };
+
 export default HomeScreen;

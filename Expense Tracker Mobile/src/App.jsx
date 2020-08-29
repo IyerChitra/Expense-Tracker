@@ -11,12 +11,13 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
-import AppStackNavigator from './screens';
+import { AppStackNavigator, AppBottomTabNavigator } from './screens';
 
 const AppNavigator = () => (
   <View style={{ flex: 1 }}>
     <NavigationContainer>
       <AppStackNavigator />
+      {/* <AppBottomTabNavigator /> */}
     </NavigationContainer>
   </View>
 );
