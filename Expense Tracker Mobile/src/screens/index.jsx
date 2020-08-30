@@ -54,7 +54,7 @@ const TabNavigator = ({ navigation, route }) => {
 
 TabNavigator.propTypes = {
   navigation: PropTypes.object || PropTypes.func,
-  route: PropTypes.string,
+  route: PropTypes.object,
   focused: PropTypes.bool,
   color: PropTypes.string,
   size: PropTypes.number

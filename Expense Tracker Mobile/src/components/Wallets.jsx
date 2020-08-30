@@ -1,10 +1,11 @@
 import React from 'react';
-import { ListItem, Avatar } from 'react-native-elements';
-import { ScrollView, TouchableOpacity } from 'react-native';
+import { ListItem } from 'react-native-elements';
+import { ScrollView } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import FA5Icon from 'react-native-vector-icons/FontAwesome5';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
+import PropTypes from 'prop-types';
 
 const list = [
   {
@@ -116,5 +117,9 @@ const WalletsComponent = ({ navigation }) => (
     ))}
   </ScrollView>
 );
+
+WalletsComponent.propTypes = {
+  navigation: PropTypes.object
+};
 
 export default WalletsComponent;
