@@ -8,7 +8,7 @@ Start the Server using:
 Start the server without running any tests using:
 `mvn spring-boot:run -DskipTests`
 
-# Working Example :
+# Working Example 
 After you start the server, You can try hitting a dummy API already wired into controller.
 This should give you a String response in return.
 
